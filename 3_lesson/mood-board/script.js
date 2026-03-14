@@ -71,7 +71,7 @@ const stageEL = document.getElementById('stage');
 const glowEL = document.getElementById('stage-glow');
 const emojiEL = document.getElementById('mood-emoji');
 const titleEl = document.getElementById('mood-title');
-const subtitle = document.getElementById('mood-sumtitle');
+const subtitleEL = document.getElementById('mood-subtitle');
 const waveEl = document.getElementById('wave');
 const clickCountEL = document.getElementById('click-count');
 const currentMoodEL = document.getElementById('current-mood');
@@ -95,4 +95,67 @@ for (let i = 0; i < BAR_COUNT; i++){
     waveEl.appendChild(bar);
     
 }
+
+function applyMood(key) {
+    const mood = MOODS[key];
+    if (!mood) return;
+    // Счетчик
+    clickCount++;
+
+    // Фон
+    stageEL.style.background = mood.bg;
+
+    // Glow
+    glowEL.style.background = mood.glow;
+    glowEL.style.opacity = '0.25';
+
+    // Анимация эмоджи: уменьшение -> меняем эмоджи -> увеличение
+    emojiEL.style.transform = 'scale(0.4)';
+    emojiEL.style.opacity = '0';
+    setTimeout(()=> {
+        emojiEL.textContent = mood.emoji;
+        emojiEL.style.transform = 'scale(1)';
+        emojiEL.style.opacity = '1';
+    }, 160);
+
+    // Меняем текст заголовка и подзаголовка
+    titleEl.textContent = mood.title;
+    titleEl.style.color = mood.color;
+    subtitleEL.textContent = mood.subtitle;
+
+    // Анимация волны
+    const waveBars = waveEl.querySelectorAll('.wave-bar');
+    waveBars.forEach((bar, i)=>{
+        setTimeout(()=>{
+            bar.style.height = (mood.wave[i] ?? 8) + 'px';
+            bar.style.background = mood.color;
+            bar.style.opacity = '0.65';
+        }, i * 25);
+    });
+
+    // Кнопки
+    moodBtns.forEach(b=>b.classList.remove('active'));
+    document.querySelector(`[data-mood="${key}"]`).classList.add('active');
+
+    //Статистика
+    clickCountEL.textContent = clickCount;
+    currentMoodEL.textContent = mood.title;
+    keyHintEL.textContent = mood.key;
+}
+
+// 5. Обратботчики событий
+
+// Клики по кнопкам
+
+moodBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        applyMood(e.currentTarget.dataset.mood);
+    });
+});
+
+// Нажатие клавиш 1-6
+document.addEventListener('keydown', (e) => {
+    const entry = Object.entries(MOODS).find(([, mood])=> mood.key === e.key);
+    if (entry) applyMood(entry[0]);
+});
 

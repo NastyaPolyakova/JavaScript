@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Карточка персонажа</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Unbounded:wght@400;700;900&family=Manrope:wght@400;500;600&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ── ФОРМА ── -->
+    <div class="pane-form">
+      <div class="form-eyebrow">✦ Создай своего персонажа</div>
+      <div class="form-title">Анкета<br>персонажа</div>
+
+      <form id="char-form" novalidate>
+
+        <div class="form-group" data-field="name">
+          <label class="form-label" for="inp-name">Имя персонажа *</label>
+          <input class="form-input" type="text" id="inp-name" name="name"
+            placeholder="Например: Артём Огненный" maxlength="30" autocomplete="off">
+          <div class="form-error-msg">Введи имя (минимум 2 символа)</div>
+        </div>
+
+        <div class="form-group" data-field="role">
+          <label class="form-label" for="inp-role">Роль *</label>
+          <select class="form-select" id="inp-role" name="role">
+            <option value="">— Выбери роль —</option>
+            <option value="⚔️ Воин">⚔️ Воин</option>
+            <option value="🧙 Волшебник">🧙 Волшебник</option>
+            <option value="🏹 Следопыт">🏹 Следопыт</option>
+            <option value="🗡️ Плут">🗡️ Плут</option>
+            <option value="🛡️ Паладин">🛡️ Паладин</option>
+            <option value="🔮 Некромант">🔮 Некромант</option>
+          </select>
+          <div class="form-error-msg">Выбери роль персонажа</div>
+        </div>
+
+        <div class="form-group" data-field="power">
+          <label class="form-label" for="inp-power">Суперсила</label>
+          <input class="form-input" type="text" id="inp-power" name="power"
+            placeholder="Например: Управление временем" maxlength="40" autocomplete="off">
+        </div>
+
+        <div class="form-group" data-field="motto">
+          <label class="form-label" for="inp-motto">Девиз</label>
+          <textarea class="form-textarea" id="inp-motto" name="motto"
+            placeholder="Краткий девиз персонажа..." maxlength="80" rows="2"></textarea>
+        </div>
+
+        <div class="form-group" data-field="color">
+          <label class="form-label">Цвет персонажа</label>
+          <div class="color-picker" id="color-picker">
+            <div class="color-dot selected" data-color="#c87d2f" style="background:#c87d2f"></div>
+            <div class="color-dot" data-color="#7c3aed" style="background:#7c3aed"></div>
+            <div class="color-dot" data-color="#0ea5e9" style="background:#0ea5e9"></div>
+            <div class="color-dot" data-color="#10b981" style="background:#10b981"></div>
+            <div class="color-dot" data-color="#ef4444" style="background:#ef4444"></div>
+            <div class="color-dot" data-color="#f59e0b" style="background:#f59e0b"></div>
+            <div class="color-dot" data-color="#ec4899" style="background:#ec4899"></div>
+            <div class="color-dot" data-color="#1a1008" style="background:#1a1008"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit">✦ Создать карточку</button>
+
+      </form>
+    </div>
+
+    <!-- ── КАРТОЧКА ── -->
+    <div class="pane-card">
+      <div class="card-label">✦ Превью карточки</div>
+
+      <div class="char-card" id="char-card">
+        <div class="card-stripe" id="card-stripe"></div>
+
+        <!-- Пустое состояние -->
+        <div class="card-empty" id="card-empty">
+          <span class="card-empty-icon">🎭</span>
+          <div class="card-empty-text">Заполни форму<br>и карточка оживёт</div>
+        </div>
+
+        <!-- Контент карточки (скрыт до заполнения) -->
+        <div id="card-content" style="display:none">
+          <div class="card-avatar" id="card-avatar">?</div>
+          <div class="card-name" id="card-name">???</div>
+          <div class="card-role" id="card-role">—</div>
+          <div class="card-divider"></div>
+          <div class="card-field">
+            <div class="card-field-label">Суперсила</div>
+            <div class="card-field-value" id="card-power">—</div>
+          </div>
+          <div class="card-field">
+            <div class="card-field-label">Девиз</div>
+            <div class="card-field-value" id="card-motto">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Статистика -->
+      <div class="card-stats">
+        <div class="cstat">
+          <span class="cstat-val" id="stat-chars">0</span>
+          <span class="cstat-lbl">символов</span>
+        </div>
+        <div class="cstat">
+          <span class="cstat-val" id="stat-cards">0</span>
+          <span class="cstat-lbl">карточек</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

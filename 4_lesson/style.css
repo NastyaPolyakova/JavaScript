@@ -1,0 +1,412 @@
+/* =====================================================
+   CHAR CARD — style.css
+   Урок 04: Формы и обработка данных
+   ===================================================== */
+
+/* ── RESET & BASE ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f5f0e8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Manrope', sans-serif;
+  color: #1a1008;
+
+  /* Текстура бумаги */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,.04) 28px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+}
+
+/* ── APP LAYOUT ── */
+.app {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 860px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 16px rgba(0,0,0,.06),
+    0 24px 48px rgba(0,0,0,.1);
+}
+
+/* ── ФОРМА ── */
+.pane-form {
+  flex: 1;
+  padding: 2.8rem 2.4rem;
+  border-right: 1px solid rgba(0,0,0,.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-eyebrow {
+  font-family: 'Caveat', cursive;
+  font-size: 14px;
+  color: #b07a4a;
+  margin-bottom: .4rem;
+  letter-spacing: .04em;
+}
+
+.form-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #1a1008;
+  letter-spacing: -.02em;
+  margin-bottom: 1.8rem;
+  line-height: 1.2;
+}
+
+/* ── FORM FIELDS ── */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #7a6040;
+  margin-bottom: .4rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: rgba(245, 240, 232, .6);
+  border: 1.5px solid rgba(160,120,60,.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  color: #1a1008;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #b8a88a;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #c87d2f;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(200,125,47,.12);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c87d2f' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* ── VALIDATION STATES ── */
+.form-group.error .form-input,
+.form-group.error .form-select,
+.form-group.error .form-textarea {
+  border-color: #e05252;
+  box-shadow: 0 0 0 3px rgba(224,82,82,.1);
+}
+
+.form-group.success .form-input,
+.form-group.success .form-select,
+.form-group.success .form-textarea {
+  border-color: #52b788;
+}
+
+.form-error-msg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #e05252;
+  margin-top: .3rem;
+  display: none;
+}
+
+.form-group.error .form-error-msg {
+  display: block;
+}
+
+/* ── COLOR PICKER ── */
+.color-picker {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform .2s, border-color .2s;
+  position: relative;
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+}
+
+.color-dot.selected {
+  border-color: #1a1008;
+  transform: scale(1.15);
+}
+
+.color-dot.selected::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* ── SUBMIT BUTTON ── */
+.form-submit {
+  margin-top: 1.4rem;
+  width: 100%;
+  background: #1a1008;
+  color: #f5f0e8;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+
+.form-submit:hover {
+  background: #3a2810;
+}
+
+.form-submit:active {
+  transform: scale(.98);
+}
+
+/* ── CARD PANE ── */
+.pane-card {
+  flex: 1;
+  padding: 2.8rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #faf7f2;
+}
+
+.card-label {
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  color: #b07a4a;
+  margin-bottom: 1.4rem;
+  align-self: flex-start;
+}
+
+/* ── CHARACTER CARD ── */
+.char-card {
+  width: 100%;
+  max-width: 260px;
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.8rem;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,.06),
+    0 12px 28px rgba(0,0,0,.1),
+    0 1px 0 rgba(255,255,255,.9) inset;
+  position: relative;
+  overflow: hidden;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+.char-card:hover {
+  transform: translateY(-4px) rotate(.5deg);
+}
+
+.card-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: #c87d2f;
+  transition: background .4s;
+}
+
+.card-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #c87d2f;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  transition: background .4s, transform .4s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  z-index: 1;
+}
+
+.card-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #1a1008;
+  text-align: center;
+  margin-bottom: .2rem;
+  letter-spacing: -.02em;
+  min-height: 1.4em;
+  transition: color .3s;
+}
+
+.card-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  color: #c87d2f;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  transition: color .3s;
+}
+
+.card-divider {
+  height: 1px;
+  background: rgba(0,0,0,.08);
+  margin: 0 0 1rem;
+}
+
+.card-field {
+  margin-bottom: .7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+
+.card-field-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #b8a88a;
+}
+
+.card-field-value {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #1a1008;
+  font-weight: 600;
+  min-height: 1.2em;
+  line-height: 1.3;
+}
+
+/* ── EMPTY STATE ── */
+.card-empty {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.card-empty-icon {
+  font-size: 40px;
+  margin-bottom: .8rem;
+  opacity: .3;
+  display: block;
+}
+
+.card-empty-text {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #b8a88a;
+  line-height: 1.5;
+}
+
+/* ── CARD APPEAR ANIMATION ── */
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(.85) translateY(16px) rotate(-2deg); }
+  to   { opacity: 1; transform: scale(1)   translateY(0)    rotate(0deg);  }
+}
+
+.char-card.animate {
+  animation: cardIn .5s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+/* ── STATS ── */
+.card-stats {
+  display: flex;
+  gap: 1.6rem;
+  margin-top: 1.4rem;
+  width: 100%;
+  max-width: 260px;
+  justify-content: center;
+}
+
+.cstat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.cstat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #3a2810;
+}
+
+.cstat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #b8a88a;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .pane-form {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+
+  .pane-card {
+    padding: 2rem 1.6rem;
+  }
+}
